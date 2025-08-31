@@ -10,10 +10,12 @@ def download_video(url):
         if stream is None:
             print("No se encontró un stream adecuado para descargar.")
             return None
-        video_title = yt.title + " video.mp4"
+        # Limpiar el título para que sea válido en Windows
+        invalid_chars = '<>:"/\\|?*'
+        clean_title = ''.join(c for c in yt.title if c not in invalid_chars)
+        video_title = clean_title + " video.mp4"
         video_path = f"downloads/videos/{video_title}"
         stream.download(output_path="downloads/videos", filename=video_title)
-        
         print(f"Video descargado como: {video_path}")
         return video_title
     except VideoUnavailable:
